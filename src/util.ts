@@ -173,7 +173,7 @@ export function setValueAtPath(target: unknown, val: unknown, path: PathSegments
   while (++cursor < len) {
     step = path[cursor];
     if (step === '__proto__' || step === 'constructor' || step === 'prototype') {
-      throw new Error('Prototype pollution attempt detected.');
+      return undefined;
     }
     if (Array.isArray(it)) {
       if (step === '-' && cursor === end) {
