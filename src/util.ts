@@ -148,6 +148,9 @@ export function compilePointerDereference(path: PathSegments): Dereference {
     return (it): unknown => it;
   }
   body = path.reduce((body, _, i) => {
+    if (/[\(|\)|\']/.test(path[i])){
+      throw new Error('Arbitrary code injection attempt detected.');
+    }
     return body + " && \n\ttypeof((it = it['" + replace(path[i] + '', '\\', '\\\\') + "'])) !== 'undefined'";
   }, "if (typeof(it) !== 'undefined'") as string;
   body = body + ') {\n\treturn it;\n }';
